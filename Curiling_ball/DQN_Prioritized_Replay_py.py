@@ -216,7 +216,7 @@ if __name__ == "__main__":
         score_list.append(score)
         if replay_buff.len >= replay_len:
             train_flag = True
-            train(Q_value,Q_target,replay_buff,optimizer, batch_size,huber,gamma,loss_list,Replay_time=20)
+            train(Q_value,Q_target,replay_buff,optimizer,batch_size,huber,gamma,loss_list,Replay_time=20)
         # 更新目标网络
         if (i+1) % update_target_interval == 0 and i > 0:
             Q_target.load_state_dict(Q_value.state_dict())

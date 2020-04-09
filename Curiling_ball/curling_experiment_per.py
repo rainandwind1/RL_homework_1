@@ -17,17 +17,17 @@ map_scale = 4
 
 # Hyperparameter
 learning_rate = 0.001
-memory_len = 10000
+memory_len = 20000
 gamma = 0.9
-batch_size = 64
+batch_size = 128
 output_size = 4
 state_size = 8
 replay_len = 2000
 
-epoch_num = 500
+epoch_num = 1500
 max_steps = 300
 update_target_interval = 25
-replay_time = 30
+replay_time = 50
 alpha = 0.6
 beta = 0.4
 

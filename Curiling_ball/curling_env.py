@@ -7,6 +7,8 @@
 import numpy as np
 import turtle as t
 
+# 显示会使得训练变慢
+dis_play_key = True
 
 t.setup(1000,1000)
 t.pensize(5)
@@ -67,27 +69,28 @@ class curling_env():
     def reset(self):
         self.init_env_param()
 
-        # 画面初始化
-        t.goto(0,0)
-        t.goto(0,400)
-        t.goto(400,400)
-        t.goto(400,0)
-        t.goto(0,0)
-        t.penup()
-        t.hideturtle()
-        # ball
-        self.ball.reset()
-        self.ball.penup()
-        self.ball.setpos(self.x*map_scale,self.y*map_scale)
-        self.ball.pendown()
-        self.ball.pensize(3)
-        self.ball.speed(10)
-        # target
-        self.target.reset()
-        self.target.penup()
-        self.target.setpos(self.target_x*map_scale,self.target_y*map_scale)
-        self.target.dot(30,"blue")
-        self.target.hideturtle()
+        if dis_play_key:
+            # 画面初始化
+            t.goto(0,0)
+            t.goto(0,400)
+            t.goto(400,400)
+            t.goto(400,0)
+            t.goto(0,0)
+            t.penup()
+            t.hideturtle()
+            # ball
+            self.ball.reset()
+            self.ball.penup()
+            self.ball.setpos(self.x*map_scale,self.y*map_scale)
+            self.ball.pendown()
+            self.ball.pensize(3)
+            self.ball.speed(10)
+            # target
+            self.target.reset()
+            self.target.penup()
+            self.target.setpos(self.target_x*map_scale,self.target_y*map_scale)
+            self.target.dot(30,"blue")
+            self.target.hideturtle()
         
         self.state = [self.x,self.y,self.a_x,self.a_y,self.v_x,self.v_y,self.target_x,self.target_y]
         obversation = self.state
@@ -136,7 +139,10 @@ class curling_env():
 
     # 刷新显示
     def render(self):
-        self.ball.goto(self.x*map_scale,self.y*map_scale)
+        if dis_play_key:
+            self.ball.goto(self.x*map_scale,self.y*map_scale)
+        else:
+            return
 
 def main():
     env = curling_env()

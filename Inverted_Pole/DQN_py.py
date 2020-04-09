@@ -124,16 +124,16 @@ if __name__ == "__main__":
 
     # 超参数设置
     gamma = 0.99
-    learning_rate = 0.008
+    learning_rate = 0.01
     output_size = 2
     state_size = 4
     memory_len = 10000
-    epoch_num = 1200   # 回合数
+    epoch_num = 300   # 回合数
     max_steps = 400   # 最大步数
     update_target_interval = 50 # 目标网络更新间隔
     batch_size = 64
     train_flag = False
-    train_len = 2000
+    train_len = 1000
 
     # 初始化
     Q_value = DQN(input_size = state_size,output_size=output_size,memory_len = memory_len)
@@ -142,6 +142,7 @@ if __name__ == "__main__":
     loss_list = []
     optimizer = optim.Adam(Q_value.parameters(),lr = learning_rate)
     huber = nn.SmoothL1Loss()
+
 
 
 
@@ -162,7 +163,7 @@ if __name__ == "__main__":
         score_list.append(score)
         if len(Q_value.memory_list) >= train_len:
             train_flag = True
-            train(Q_value,Q_target,optimizer,huber,batch_size,gamma,loss_list,Replay_time=20)
+            train(Q_value,Q_target,optimizer,huber,batch_size,gamma,loss_list,Replay_time=32)
         # 更新目标网络
         if (i+1) % update_target_interval == 0 and i > 0:
             Q_target.load_state_dict(Q_value.state_dict())

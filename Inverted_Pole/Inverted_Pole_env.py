@@ -9,7 +9,7 @@ import math
 # 采样时间 Ts = 0.005s
 
 
-Q_rew = np.matrix([[5,0],[0,0.1]])
+Q_rew = np.matrix([[5.,0.],[0.,0.1]])
 R_rew = 1.0
 T_s = 0.005
 a = [-3,0,3]
@@ -50,8 +50,6 @@ def bar_init(name, length):
 
 class Inverted_Pole():
     def __init__(self):
-        super(Inverted_Pole,self).__init__()
-        
         self.m = 0.055      # 重量
         self.g = 9.81       # 重力加速度
         self.l = 0.042      # 重心到转子的距离
@@ -82,9 +80,9 @@ class Inverted_Pole():
 
     def is_vaild(self):
         # print("is_valid")
-        if self.alpha <= -pi:
+        if self.alpha < -pi:
             self.alpha += 2*pi
-        if self.alpha > pi:
+        if self.alpha >= pi:
             self.alpha += -2*pi
         if self.alpha_v <= -15*pi:
             self.alpha_v = -15*pi
@@ -103,24 +101,24 @@ class Inverted_Pole():
         self.is_vaild()
         self.alpha += T_s*self.alpha_v
         self.is_vaild()
-        self.render()
+        # self.render()
         self.state = [self.alpha,self.alpha_v]
         #print(self.alpha,self.alpha_av,self.alpha_v,self.a)
 
     def reset(self):
-        t.goto(0,0)
-        t.pendown()
-        t.dot(25)
-        t.pensize(5)
-        t.penup()
-        t.goto(-250,-250)
-        t.pendown()
-        t.goto(250,-250)
-        t.goto(250,250)
-        t.goto(-250,250)
-        t.goto(-250,-250)
-        t.penup()
-        t.goto(0,0)
+        # t.goto(0,0)
+        # t.pendown()
+        # t.dot(25)
+        # t.pensize(5)
+        # t.penup()
+        # t.goto(-250,-250)
+        # t.pendown()
+        # t.goto(250,-250)
+        # t.goto(250,250)
+        # t.goto(-250,250)
+        # t.goto(-250,-250)
+        # t.penup()
+        # t.goto(0,0)
         self.init_params()
         #print(self.state)
         return self.state
