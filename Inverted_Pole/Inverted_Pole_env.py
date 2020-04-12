@@ -98,27 +98,26 @@ class Inverted_Pole():
     def update_param(self):
         self.alpha_av = (1.0/self.J)*(self.m*self.g*self.l*math.sin(self.alpha) - self.b*self.alpha_v - self.K**2/self.R*self.alpha_v + self.K/self.R*self.a)
         self.alpha_v += T_s*self.alpha_av
-        self.is_vaild()
         self.alpha += T_s*self.alpha_v
         self.is_vaild()
-        # self.render()
+        self.render()
         self.state = [self.alpha,self.alpha_v]
         #print(self.alpha,self.alpha_av,self.alpha_v,self.a)
 
     def reset(self):
-        # t.goto(0,0)
-        # t.pendown()
-        # t.dot(25)
-        # t.pensize(5)
-        # t.penup()
-        # t.goto(-250,-250)
-        # t.pendown()
-        # t.goto(250,-250)
-        # t.goto(250,250)
-        # t.goto(-250,250)
-        # t.goto(-250,-250)
-        # t.penup()
-        # t.goto(0,0)
+        t.goto(0,0)
+        t.pendown()
+        t.dot(25)
+        t.pensize(5)
+        t.penup()
+        t.goto(-250,-250)
+        t.pendown()
+        t.goto(250,-250)
+        t.goto(250,250)
+        t.goto(-250,250)
+        t.goto(-250,-250)
+        t.penup()
+        t.goto(0,0)
         self.init_params()
         #print(self.state)
         return self.state

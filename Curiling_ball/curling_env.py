@@ -139,6 +139,7 @@ class curling_env():
 
     # 刷新显示
     def render(self):
+        # return
         if dis_play_key:
             self.ball.goto(self.x*map_scale,self.y*map_scale)
         else:

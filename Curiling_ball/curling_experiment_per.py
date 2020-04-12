@@ -17,14 +17,14 @@ map_scale = 4
 
 # Hyperparameter
 learning_rate = 0.001
-memory_len = 20000
+memory_len = 30000
 gamma = 0.9
 batch_size = 128
 output_size = 4
 state_size = 8
 replay_len = 2000
 
-epoch_num = 1500
+epoch_num = 600
 max_steps = 300
 update_target_interval = 25
 replay_time = 50
@@ -45,6 +45,7 @@ loss_list = []
 if LOAD_KEY:
     checkpoint = torch.load(path)
     Q_value.load_state_dict(checkpoint)
+    Q_target.load_state_dict(checkpoint)
     print("Load weights!")
 else:
     print("No exist weights to use!")
