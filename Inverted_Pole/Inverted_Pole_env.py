@@ -74,7 +74,7 @@ class Inverted_Pole():
         self.a = 0
 
     def init_params(self):
-        self.alpha, self.alpha_v,self.alpha_av = -pi,0.0,0.0 # 起始状态 目标状态[0,0]
+        self.alpha, self.alpha_v,self.alpha_av = -pi,0,0.0 # 起始状态 目标状态[0,0]
         self.state = [self.alpha,self.alpha_v]
         
 

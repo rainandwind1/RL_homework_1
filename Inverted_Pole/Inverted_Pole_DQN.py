@@ -8,7 +8,7 @@ from DDQN_tf import DDQN,train,plot_curse
 from xzw_env import pendulum_env
 import os
 
-LOAD_KEY = True
+LOAD_KEY = False
 path = 'E:\Code\param\inverted_pole_ddqn.ckpt'
 
 # t.setup(1000,1000)
@@ -24,11 +24,11 @@ gamma = 0.98
 batch_size = 64
 output_size = 3
 state_size = 2
-Replay_time = 2
+Replay_time = 60
 Replay_len = 500
 
-epoch_num = 800
-max_steps = 2000
+epoch_num = 2000
+max_steps = 800
 update_target_interval = 50
 
 # 初始化
@@ -50,13 +50,17 @@ def main():
     env = pendulum_env()
     score_avg = 0.0
     epsilon = 0.9
+    exp = 0.8
     train_flag = False
     for epo_i in range(epoch_num):
         score = 0.0
-        epsilon = max(0.01,epsilon*0.999)
+        epsilon = max(0.01,epsilon*0.998)
         s = env.reset()
         for i in range(max_steps):
             action = Q_value.sample_action(s,epsilon)
+            # if (s[0] >= -np.math.pi and s[0] <= -5/6*np.math.pi) or (s[0] <= np.math.pi and s[0] >= 5/6*np.math.pi):
+            #     exp_rate = max(0.01,exp*0.999)
+            #     action = Q_value.sample_action(s,0.8)
             s_next,reward,done_flag = env.step(action)
             Q_value.save_memory((s,action,reward,s_next,done_flag))
             score += reward
@@ -64,14 +68,14 @@ def main():
             # print(s_next)
             if done_flag == 0:
                 break
-            if len(Q_value.memory_list) >= Replay_len:
-                train_flag = True
-                train(Q_value,Q_target,optimizer,batch_size,gamma,loss_list,Replay_time)
-
+            
         score_list.append(score)
         score_avg += score
 
-        
+        if len(Q_value.memory_list) >= Replay_len:
+                train_flag = True
+                train(Q_value,Q_target,optimizer,batch_size,gamma,loss_list,Replay_time)
+
         if (epo_i+1) % update_target_interval == 0 and epo_i > 0:
             for raw,target in zip(Q_value.variables,Q_target.variables):
                 target.assign(raw)

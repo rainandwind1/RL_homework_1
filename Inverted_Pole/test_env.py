@@ -212,14 +212,14 @@ def training(buffer, batch_size, model, optimizer, gamma, loss_fn):
 if __name__ == '__main__':
     epsilon_init = 0.9
     epsilon_min = 0.01
-    decay = 0.995
+    decay = 0.999
     capacity = 10000
-    exploration = 5000
+    exploration = 500
     batch_size = 64
     episode = 1000000
     render = True
     learning_rate = 1e-3
-    gamma = 0.99
+    gamma = 0.98
     loss_fn = nn.MSELoss()
     max_step = 500
 
@@ -254,7 +254,7 @@ if __name__ == '__main__':
                 else:
                     weight_reward = 0.99 * weight_reward + 0.01 * reward_total
                 break
-        print('episode: {}  reward: {}   train:  {} '.format(epo_i+1, reward_total, train_flag))
+        print('episode: {}  reward: {}   train:  {}  epsilon:{}'.format(epo_i+1, reward_total, train_flag, epsilon))
                 
 
 
