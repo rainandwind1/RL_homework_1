@@ -8,7 +8,8 @@ import math
 # self.a = [-3,0,3]
 # 采样时间 Ts = 0.005s
 
-
+display = False
+t.Turtle().screen.delay(0)
 Q_rew = np.matrix([[5.,0.],[0.,0.1]])
 R_rew = 1.0
 T_s = 0.005
@@ -96,10 +97,13 @@ class Inverted_Pole():
         return reward
 
     def update_param(self):
-        self.alpha_av = (1.0/self.J)*(self.m*self.g*self.l*math.sin(self.alpha) - self.b*self.alpha_v - self.K**2/self.R*self.alpha_v + self.K/self.R*self.a)
-        self.alpha_v += T_s*self.alpha_av
+        pre_alpha = self.alpha
+        pre_alpha_v = self.alpha_v
         self.alpha += T_s*self.alpha_v
+        self.alpha_av = (1.0/self.J)*(self.m*self.g*self.l*math.sin(pre_alpha) - self.b*pre_alpha_v - self.K**2/self.R*pre_alpha_v + self.K/self.R*self.a)
+        self.alpha_v += T_s*self.alpha_av
         self.is_vaild()
+        
         self.render()
         self.state = [self.alpha,self.alpha_v]
         #print(self.alpha,self.alpha_av,self.alpha_v,self.a)
@@ -123,8 +127,9 @@ class Inverted_Pole():
         return self.state
 
     def render(self):
-        self.bar.speed(30)
-        self.bar.setheading((pi-self.alpha)*pi_scale)
+        if display:
+            self.bar.speed(10)
+            self.bar.setheading((pi-self.alpha)*pi_scale)
 
     def step(self,action_index):
         self.a = a[action_index]

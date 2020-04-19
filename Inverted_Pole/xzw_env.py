@@ -16,7 +16,7 @@ class pendulum_env(object):
         self.state_size = 2
         self.action_size = 3
 
-        self.theta = np.pi
+        self.theta = np.pi/6
         self.omega = 0
 
     def reset(self):
@@ -51,4 +51,4 @@ class pendulum_env(object):
             done_flag = 0
         else:
             done_flag = 1
-        return [self.theta, self.omega], reward, done_flag
+        return [self.theta, self.omega], reward, done_flag, None

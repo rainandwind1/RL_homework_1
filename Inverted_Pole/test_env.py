@@ -146,8 +146,9 @@ class dqn(nn.Module):
         self.action_dim = action_dim
 
         self.fc1 = nn.Linear(self.observation_dim, 128)
-        self.fc2 = nn.Linear(128, 128)
-        self.fc3 = nn.Linear(128, self.action_dim)
+        self.fc2 = nn.Linear(128, 256)
+        self.fc3 = nn.Linear(256, 128)
+        self.fc4 = nn.Linear(128, self.action_dim)
 
     def forward(self, observation):
         x = self.fc1(observation)
@@ -155,6 +156,8 @@ class dqn(nn.Module):
         x = self.fc2(x)
         x = F.relu(x)
         x = self.fc3(x)
+        x = F.relu(x)
+        x = self.fc4(x)
         return x
 
     def get_action(self, observation, epsilon):
@@ -221,7 +224,7 @@ if __name__ == '__main__':
     learning_rate = 1e-3
     gamma = 0.98
     loss_fn = nn.MSELoss()
-    max_step = 500
+    max_step = 1200
 
     env = pendulum_env()
     action_dim = env.action_size
