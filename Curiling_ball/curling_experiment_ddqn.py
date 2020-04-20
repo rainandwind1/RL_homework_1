@@ -8,7 +8,7 @@ from DDQN_tf import DDQN,train,plot_curse
 import os
 
 LOAD_KEY = True
-path = 'E:\Code\param\culing_ddqn.ckpt'
+path = 'param\culing_ddqn.ckpt'
 
 t.setup(1000,1000)
 t.pensize(5)

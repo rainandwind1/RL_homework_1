@@ -7,7 +7,7 @@ import torch
 from torch import nn, optim
 
 LOAD_KEY = True
-path = 'E:\Code\param\culing_dqnper.pkl'
+path = 'param\culing_dqnper.pkl'
 
 t.setup(1000,1000)
 t.pensize(5)

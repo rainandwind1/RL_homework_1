@@ -8,8 +8,8 @@ from DDQN_tf import DDQN,train,plot_curse
 from xzw_env import pendulum_env
 import os
 
-LOAD_KEY = False
-path = 'E:\Code\param\inverted_pole_dqn001.ckpt'
+LOAD_KEY = True
+path = 'param\inverted_pole_dqn001.ckpt'
 
 # t.setup(1000,1000)
 # t.pensize(5)
@@ -18,7 +18,7 @@ path = 'E:\Code\param\inverted_pole_dqn001.ckpt'
 map_scale = 4
 
 # Hyperparameter
-learning_rate = 0.001
+learning_rate = 0.005
 memory_len = 10000
 gamma = 0.98
 batch_size = 64
@@ -28,7 +28,7 @@ Replay_time = 1
 Replay_len = 500
 
 epoch_num = 2000
-max_steps = 200
+max_steps = 400
 update_target_interval = 50
 
 # 初始化
@@ -49,7 +49,7 @@ loss_list = []
 def main():
     env = Inverted_Pole()
     score_avg = 0.0
-    epsilon = 0.9
+    epsilon = 0.01
     exp = 0.8
     train_flag = False
     for epo_i in range(epoch_num):

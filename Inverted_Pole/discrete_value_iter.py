@@ -53,7 +53,7 @@ def random_walk():
 def Data_is_vaild(alpha, alpha_v):
     if alpha < -pi:
         alpha += 2*pi
-    if alpha >= pi:
+    if alpha >= 3.14:
         alpha += -2*pi
     if alpha_v <= -15*pi:
         alpha_v = -15*pi
@@ -81,7 +81,7 @@ def plot_curse(target_list):
 
 
 
-s_set_num = 300  # 离散化尺度
+s_set_num = 200 # 离散化尺度
 def train():
     print("train beginning!")
     env = pendulum_env() 
@@ -111,7 +111,7 @@ def train():
                     al_next = int((alpha_next + pi)*s_set_num/(2*pi))
                     al_v_next = int((alpha_v_next + 15*pi)*s_set_num/(30*pi))
                     # print(alpha, alpha_v, alpha_av, alpha_next, alpha_v_next, al_next, al_v_next)
-                    # print(al_next, al_v_next)
+                    # print(alpha_next, al_next, al_v_next)
                     pre = Q_table[al][al_v][j]
                     Q_table[al][al_v][j] = Reward([alpha_next,alpha_v_next],a[j]) + gamma*max(Q_table_pre[al_next][al_v_next])
                     # print(Reward([alpha_next,alpha_v_next],a[j]))
@@ -169,7 +169,7 @@ def dis_q():
 
 
 train_flag = False
-display_flag = True
+display_flag = False
 if __name__ == "__main__":
     if train_flag:
         train()

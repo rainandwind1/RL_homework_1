@@ -5,7 +5,7 @@ import math
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from xzw_env import pendulum_env # 训练用的环境
-
+import copy
 pi = np.math.pi
 
 def Data_is_vaild(alpha, alpha_v):
@@ -21,7 +21,7 @@ def Data_is_vaild(alpha, alpha_v):
 
 
 # 随机动作采样数据以备学习
-sample_size = 7500
+sample_size = 15000
 Q_rew = np.matrix([[5.,0.],[0.,0.1]])
 R_rew = 1.0
 a = [-3,0,3]
@@ -58,8 +58,8 @@ def x_state(s, a):
     cha = []
     for m in range(discrete_num):
         for n in range(discrete_num):
-            u1 = -pi + m*2*pi/discrete_num
-            u2 = -15*pi + n*30*pi/discrete_num
+            u1 = -pi + (m+1)*2*pi/(discrete_num+1)
+            u2 = -15*pi + (n+1)*30*pi/(discrete_num+1)
             cha.append(Gauss_RBF(u1, u2, sigma1, sigma2, s))
     if a == 0:
         return np.mat(cha + [0. for i in range(discrete_num**2)]*2).T
@@ -71,40 +71,73 @@ def x_state(s, a):
 
 discrete_num = 9
 w_init = [0.0 for i in range(discrete_num*discrete_num*3)]
-train_steps = 4
+train_steps = 10
 gamma = 0.98
 flag_step = 0
-LOAD_KEY = True
+LOAD_KEY = False
 def train():
     w = np.mat(w_init).T
     if LOAD_KEY:
         w = np.load('lspi.npy')
-    for i in range(train_steps):
-        data = random_play()
+    data = random_play()
+    X_s = []
+    X_next = []
+    R = []
+    for n_index,trans in enumerate(data):
+        s, a_idx, r, s_next = trans
+        next_val = []
+        R.append(r)
+        for i in range(3):
+            next_val.append(x_state(s_next, i))
+        X_s.append(x_state(s, a_idx))
+        X_next.append(next_val)
+
+    print("train beginning!")
+    policy = [0 for i in range(sample_size)]
+    policy_pre = [1 for i in range(sample_size)]
+    iter_count = 0
+    while iter_count<200:
+        iter_count += 1
         w_pre = w
-        w_mem = [w]
         count = 0
         sigma_Y_t = 0
         sigma_Y_tr = 0
-        print('train step: {}'.format(i))
-        for trans in data:
+        policy_pre = copy.deepcopy(policy)
+        print('train step: {}'.format(iter_count))
+        for n_index,state_val in enumerate(zip(X_s, X_next)):
             count += 1
-            next_val = []
-            s, a_idx, r, s_next = trans
+            x_s, x_next = state_val
+            val_n = []
             for i in range(3):
-                next_val.append(x_state(s_next, i).T*w)
-            Y_t = x_state(s, a_idx) - gamma*x_state(s_next, next_val.index(max(next_val)))
+                val_n.append(x_next[i].T*w)
+            max_index = val_n.index(max(val_n))
+            # print(max_index)
+            Y_t = x_s - gamma*x_next[max_index]
+            policy[n_index] = max_index
+            # print(policy[n_index],policy_pre[n_index])
             sigma_Y_t += Y_t*Y_t.T
-            sigma_Y_tr +=  Y_t*r
+            sigma_Y_tr +=  Y_t*R[n_index]
         w_pre = w
         w = sigma_Y_t.I*sigma_Y_tr
-        print(max(w-w_pre)[0,0])
-        w_mem.append(w)
-    np.save('lspi.npy', w)
+        if policy != policy_pre:
+            nums = count_num(policy,policy_pre)
+            print("diff num on policy:{}".format(nums))
+        elif iter_count > 1:
+            print("策略收敛!")
+    np.save('lspi_15000_2.npy', w)
 
+
+def count_num(l1,l2):
+    res = 0
+    for i,j in zip(l1,l2):
+        if i!=j:
+            res += 1
+        else:
+            continue
+    return res
 
 def display():
-    w = np.load('lspi.npy')
+    w = np.load('lspi_15000_2.npy')
     env = Inverted_Pole()
     num_epoch = 1000
     max_steps = 700
@@ -123,7 +156,7 @@ def display():
 
 
 def display_q(s_set_num):
-    w = np.load('lspi.npy')
+    w = np.load('lspi_15000_2.npy')
     x = [-pi + i*2*pi/s_set_num for i in range(s_set_num)]
     y = [-15*pi + i*30*pi/s_set_num for i in range(s_set_num)]
     z = [[0 for i in range(s_set_num)] for j in range(s_set_num)]
@@ -146,7 +179,7 @@ def display_q(s_set_num):
 if __name__ == "__main__":
     # train()
 
-    # from Inverted_Pole_env import Inverted_Pole # 展示用的环境
-    # display()
+    from Inverted_Pole_env import Inverted_Pole # 展示用的环境
+    display()
     
     # display_q(40)

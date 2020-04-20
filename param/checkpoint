@@ -1,0 +1,2 @@
+model_checkpoint_path: "inverted_pole_dqn001.ckpt"
+all_model_checkpoint_paths: "inverted_pole_dqn001.ckpt"

@@ -8,7 +8,7 @@ import math
 # self.a = [-3,0,3]
 # 采样时间 Ts = 0.005s
 
-display = False
+display = True
 t.Turtle().screen.delay(0)
 Q_rew = np.matrix([[5.,0.],[0.,0.1]])
 R_rew = 1.0
