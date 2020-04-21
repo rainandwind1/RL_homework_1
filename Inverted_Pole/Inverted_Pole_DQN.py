@@ -8,7 +8,7 @@ from DDQN_tf import DDQN,train,plot_curse
 from xzw_env import pendulum_env
 import os
 
-LOAD_KEY = True
+LOAD_KEY = False
 path = 'param\inverted_pole_dqn001.ckpt'
 
 # t.setup(1000,1000)

@@ -81,7 +81,7 @@ def plot_curse(target_list):
 
 
 
-s_set_num = 200 # 离散化尺度
+s_set_num = 600 # 离散化尺度
 def train():
     print("train beginning!")
     env = pendulum_env() 
@@ -176,7 +176,7 @@ if __name__ == "__main__":
     if display_flag:
         from Inverted_Pole_env import Inverted_Pole # 展示用的环境
         display()
-    # dis_q()
+    dis_q()
 
 
 
